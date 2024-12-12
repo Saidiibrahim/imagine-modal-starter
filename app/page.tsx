@@ -8,7 +8,7 @@ import * as z from "zod";
 import { ErrorBoundary } from 'react-error-boundary';
 import { toast } from 'react-toastify';
 
-const MODAL_URL = 'https://saidiibrahim--sdxl-main-entrypoint-dev.modal.run';
+const MODAL_URL = process.env.NEXT_PUBLIC_MODAL_URL;
 
 const formSchema = z.object({
   prompt: z.string().min(2, {
@@ -69,11 +69,12 @@ export default function ModalFrontend() {
           const imageBuffer = await resultResponse.arrayBuffer();
           const base64Image = Buffer.from(imageBuffer).toString('base64');
           const elapsedTime = resultResponse.headers.get('X-Elapsed-Time');
+          console.log('elapsedTime:',elapsedTime);
           
           setImage(`data:image/png;base64,${base64Image}`);
-          toast.success(`Image generated in ${elapsedTime} seconds!`, {
+          toast.success(`Image generated successfully!`, {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 3000, // 3 seconds
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,

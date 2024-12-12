@@ -75,7 +75,7 @@ export default function ModalForm({
       await navigator.clipboard.writeText(form.getValues().prompt);
       toast.success('The prompt has been copied to your clipboard.', {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 1000, // 1 seconds
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

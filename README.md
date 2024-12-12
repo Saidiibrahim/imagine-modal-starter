@@ -1,4 +1,4 @@
-# Imagine Modal Starter
+# 🐨Imagine Modal Starter
 
 A full-stack text-to-image generation starter app built with Next.js and Modal. This project provides a production-ready foundation for building AI-powered image generation applications with automatic scaling and reliable API endpoints.
 
@@ -22,12 +22,14 @@ pip install modal
 modal token new
 ```
 
-3. Deploy the backend:
+3. Temporarily deploy the backend:
 
 ```bash
 cd backend
-modal deploy app.py
+modal serve app.py
 ```
+
+Note: `modal serve` is used for ephemeral deployments (CTRL+C stops the server). For a persisted deployment, use `modal deploy`.
 
 Save the deployment URL - it will look like: `https://[ORG_NAME]--[APP_NAME]-generate.modal.run`
 
