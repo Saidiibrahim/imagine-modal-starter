@@ -1,4 +1,4 @@
-# 🐨Imagine Modal Starter
+# 🐨Imagine Modal Starter🐨
 
 A full-stack text-to-image generation starter app built with Next.js and Modal. This project provides a production-ready foundation for building AI-powered image generation applications with automatic scaling and reliable API endpoints.
 
@@ -74,6 +74,11 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 3. Wait for your image to be generated
 4. Use the copy button to save prompts you like
 5. Try the "Surprise me" button for random prompt ideas
+
+## TODO
+
+- [ ] Add CI/CD for Modal backend as per [this guide](https://modal.com/docs/guide/continuous-deployment)
+- [ ] Display the image generation time
 
 ## Contributing
 
