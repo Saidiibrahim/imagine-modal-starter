@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Imagine Modal Starter
+
+A full-stack text-to-image generation starter app built with Next.js and Modal. This project provides a production-ready foundation for building AI-powered image generation applications with automatic scaling and reliable API endpoints.
+
+![Demo Image](./public/Imagine-Modal-Starter.png)
+
+## Tech Stack
+
+- **Frontend**: [Next.js 15](https://nextjs.org/docs/) (TypeScript, Tailwind CSS)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Backend**: [Modal](https://modal.com/)
 
 ## Getting Started
 
-First, run the development server:
+### Backend Setup
+
+1. Create a [Modal](https://modal.com/) account
+2. Install Modal CLI and authenticate:
 
 ```bash
+pip install modal
+modal token new
+```
+
+3. Deploy the backend:
+
+```bash
+cd backend
+modal deploy app.py
+```
+
+Save the deployment URL - it will look like: `https://[ORG_NAME]--[APP_NAME]-generate.modal.run`
+
+### Frontend Setup
+
+1. Clone the repo
+2. Install dependencies:
+
+```bash
+pnpm install
+# or
+npm install
+# or
+yarn install
+# or
+bun install
+```
+
+3. Create `.env.local` and add your Modal URL:
+```bash
+cp .env.example .env.local
+```
+
+4. Run the development server:
+
+```bash
+pnpm dev
+# or
 npm run dev
 # or
 yarn dev
 # or
-pnpm dev
-# or
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Enter a text prompt in the input field
+2. Click "Generate" or press Enter
+3. Wait for your image to be generated
+4. Use the copy button to save prompts you like
+5. Try the "Surprise me" button for random prompt ideas
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License - feel free to use this starter for any project!

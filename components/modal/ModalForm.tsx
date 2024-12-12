@@ -3,13 +3,13 @@
 import { useState, useRef, KeyboardEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, RotateCcw, Loader2 } from "lucide-react";
+import { Copy, RotateCcw, Loader2 } from 'lucide-react';
 import { LightIcon, TabIcon } from "@/components/ui/icons";
-import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { toast } from 'react-toastify';
 import {
   Form,
   FormControl,
@@ -43,7 +43,6 @@ export default function ModalForm({
 }: ModalFormProps) {
   const [isPlaceholderActive, setIsPlaceholderActive] = useState(true);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { toast } = useToast();
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,18 +73,26 @@ export default function ModalForm({
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(form.getValues().prompt);
-      toast({
-        title: "Copied to clipboard",
-        description: "The prompt has been copied to your clipboard.",
-        duration: 3000,
+      toast.success('The prompt has been copied to your clipboard.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: { background: '#4ade80', color: '#052e16' },
       });
     } catch (error) {
       console.error('Error copying text:', error);
-      toast({
-        title: "Failed to copy text",
-        description: "Please try again.",
-        variant: "destructive",
-        duration: 3000,
+      toast.error('Failed to copy text. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
     }
   };
@@ -104,7 +111,6 @@ export default function ModalForm({
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [promptValue]);
-
 
   return (
     <Form {...form}>
@@ -217,3 +223,4 @@ export default function ModalForm({
     </Form>
   );
 }
+

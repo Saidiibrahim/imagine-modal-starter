@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Sun } from "lucide-react";
+import { Github, Sun, Moon } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -10,10 +10,19 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Moon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function NavBar() {
   const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="p-4">
@@ -22,7 +31,7 @@ export default function NavBar() {
           <div className="flex items-center space-x-4">
             <NavigationMenuItem>
               <Link
-                href="https://github.com/yourusername/yourrepo"
+                href="https://github.com/Saidiibrahim/imagine-modal-starter"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 hover:text-foreground/80 transition-colors"
@@ -53,3 +62,4 @@ export default function NavBar() {
     </div>
   );
 }
+

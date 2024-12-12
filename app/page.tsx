@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ModalOutput from '@/components/modal/ModalOutput';
 import ModalForm from '@/components/modal/ModalForm';
 import NavBar from '@/components/modal/NavBar';
 import * as z from "zod";
 import { ErrorBoundary } from 'react-error-boundary';
+import { toast } from 'react-toastify';
+
+const MODAL_URL = 'https://saidiibrahim--sdxl-main-entrypoint-dev.modal.run';
 
 const formSchema = z.object({
   prompt: z.string().min(2, {
@@ -14,6 +17,7 @@ const formSchema = z.object({
 });
 
 export default function ModalFrontend() {
+  const [mounted, setMounted] = useState(false);
   const [prompt, setPrompt] = useState('');
   const surprisePrompts = [
     "A steampunk-inspired flying machine in the clouds",
@@ -27,6 +31,14 @@ export default function ModalFrontend() {
   const newPrompt = surprisePrompts[randomIndex];
   const placeholderPrompt = "A koala chilling on a tree";
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     try {
       formSchema.parse(values);
@@ -38,19 +50,58 @@ export default function ModalFrontend() {
       const formData = new FormData();
       formData.append('prompt', values.prompt);
 
-      const res = await fetch('/api/modal', {
+      const generateResponse = await fetch(`${MODAL_URL}/generate`, {
         method: 'POST',
         body: formData,
       });
-
-      if (!res.ok) {
+      
+      if (!generateResponse.ok) {
         throw new Error('Generation failed');
       }
 
-      const data = await res.json();
-      setImage(data.image);
+      const { call_id } = await generateResponse.json();
+      
+      let attempts = 0;
+      while (attempts < 30) {
+        const resultResponse = await fetch(`${MODAL_URL}/result?call_id=${call_id}`);
+        
+        if (resultResponse.status === 200) {
+          const imageBuffer = await resultResponse.arrayBuffer();
+          const base64Image = Buffer.from(imageBuffer).toString('base64');
+          const elapsedTime = resultResponse.headers.get('X-Elapsed-Time');
+          
+          setImage(`data:image/png;base64,${base64Image}`);
+          toast.success(`Image generated in ${elapsedTime} seconds!`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            style: { background: '#4ade80', color: '#052e16' },
+          });
+          break;
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        attempts++;
+      }
+      
+      if (attempts >= 30) {
+        throw new Error('Generation timed out');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate image');
+      toast.error('Failed to generate image. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } finally {
       setPredictionLoading(false);
     }
